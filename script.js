@@ -24,15 +24,31 @@ const goToWiki = () => {
         (res) => {
             let obj = res.query.pages;
             
-            for (key in obj){
-                let rendItem = new FindItems(obj[key].pageid, obj[key].title, obj[key].extract);
-                main.classList.remove("center");
-                rendItem.render();  
+            for (let key in obj){
+                if(obj.hasOwnProperty(key)){
+                    let rendItem = new FindItems(obj[key].pageid, obj[key].title, obj[key].extract);
+                    main.classList.remove("center");
+                    rendItem.render();  
+                }
             }
           
         }
-    )
-}
+    ).catch(() => {
+        console.log('something went wrong');
+        let flag = true;
+        const errorPopUp = document.getElementById('error');
+        errorPopUp.style.display = "block";
+       
+        const popUpOff = () =>{
+            if(flag){
+                errorPopUp.style.display = "none";
+                return flag = false;
+            }           
+        };
+        errorPopUp.addEventListener('click', popUpOff);
+        setTimeout(popUpOff, 4000);
+        });
+};
 
 class FindItems {
     constructor(id, title, description){
@@ -49,6 +65,7 @@ class FindItems {
         item.innerHTML = `<div class="title">${this.title}</div>${this.description}<div></div>`;
         item.className = "link";
         root.appendChild(item);
+        
     }
 }
 
@@ -59,7 +76,7 @@ searchBtn.addEventListener('click', goToWiki);
 input.addEventListener('keydown', event =>{
     if(event.code === 'Enter'){
         goToWiki();
-    };
+    }
 });
 
 // ancor https://en.wikipedia.org/?curid=170459
