@@ -79,5 +79,3 @@ input.addEventListener('keydown', event =>{
     }
 });
 
-// ancor https://en.wikipedia.org/?curid=170459
-// https://www.youtube.com/watch?v=Dk6Wopar10k
